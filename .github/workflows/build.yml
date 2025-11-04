@@ -1,0 +1,97 @@
+name: Build Portable Executable
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.23'
+        
+    - name: Setup TDM-GCC (C compiler)
+      run: |
+        # Windows runners have MinGW pre-installed, but we'll use TDM-GCC
+        # Download TDM-GCC installer
+        $tdmUrl = "https://github.com/jmeubank/tdm-gcc/releases/download/v10.3.0-tdm64-2/tdm64-gcc-10.3.0-2.exe"
+        $installer = "$env:TEMP\tdm-gcc-installer.exe"
+        Invoke-WebRequest -Uri $tdmUrl -OutFile $installer
+        
+        # Install silently
+        Start-Process -FilePath $installer -ArgumentList "/S" -Wait
+        
+        # Add to PATH
+        $env:Path += ";C:\TDM-GCC-64\bin"
+        echo "C:\TDM-GCC-64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        
+    - name: Download r6-dissect.exe
+      run: |
+        # Try to find r6-dissect.exe in repo first
+        if (-not (Test-Path "r6-dissect.exe")) {
+          Write-Host "r6-dissect.exe not found, attempting to download..."
+          # Download from latest release (you'll need to update this URL)
+          $releaseUrl = "https://github.com/redraskal/r6-dissect/releases/latest/download/r6-dissect.exe"
+          try {
+            Invoke-WebRequest -Uri $releaseUrl -OutFile "r6-dissect.exe"
+            Write-Host "Downloaded r6-dissect.exe"
+          } catch {
+            Write-Host "Could not download r6-dissect.exe automatically"
+            Write-Host "Please ensure r6-dissect.exe is committed to the repository"
+            exit 1
+          }
+        }
+        
+    - name: Verify required files
+      run: |
+        if (-not (Test-Path "r6-dissect.exe")) {
+          Write-Error "r6-dissect.exe not found! Please add it to the repository."
+          exit 1
+        }
+        if (-not (Test-Path "r6-maps-images")) {
+          Write-Error "r6-maps-images folder not found!"
+          exit 1
+        }
+        Write-Host "All required files present"
+        
+    - name: Get dependencies
+      run: go mod tidy
+      
+    - name: Build executable
+      run: |
+        $env:CGO_ENABLED = "1"
+        go build -ldflags="-s -w" -o r6-dissect-portable.exe
+        if (Test-Path "r6-dissect-portable.exe") {
+          $size = (Get-Item "r6-dissect-portable.exe").Length / 1MB
+          Write-Host "Build successful! Size: $([math]::Round($size, 2)) MB"
+        } else {
+          Write-Error "Build failed - executable not created"
+          exit 1
+        }
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: r6-dissect-portable-windows
+        path: r6-dissect-portable.exe
+        retention-days: 30
+        
+    - name: Create Release (if tag)
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: r6-dissect-portable.exe
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
