@@ -1,4 +1,5 @@
 @echo off
+setlocal EnableExtensions EnableDelayedExpansion
 echo Building R6 Dissect Portable...
 echo.
 
@@ -19,7 +20,7 @@ if not exist "r6-maps-images" (
 
 echo Checking for C compiler...
 where gcc >nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
+IF ERRORLEVEL 1 (
     echo.
     echo ERROR: C compiler (gcc) not found!
     echo.
@@ -38,24 +39,30 @@ if %ERRORLEVEL% NEQ 0 (
 
 echo C compiler found!
 echo.
+
+echo Checking for Go toolchain...
+where go >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo ERROR: Go not found. Install with: choco install golang
+    pause
+    exit /b 1
+)
+
 echo Building executable...
 echo.
 
-set CGO_ENABLED=1
+set "CGO_ENABLED=1"
+set "CC=gcc"
 go build -ldflags="-s -w" -o r6-dissect-portable.exe
 
-if %ERRORLEVEL% EQU 0 (
+IF ERRORLEVEL 0 (
     echo.
     echo SUCCESS! Built: r6-dissect-portable.exe
-    echo.
-    for %%A in (r6-dissect-portable.exe) do echo File size: %%~zA bytes (%%~zA / 1048576 MB)
-    echo.
-    echo You can now distribute this single .exe file!
-) else (
+    for %%A in (r6-dissect-portable.exe) do echo File size: %%~zA bytes
+) ELSE (
     echo.
     echo BUILD FAILED!
     echo Check the error messages above.
 )
 
 pause
-

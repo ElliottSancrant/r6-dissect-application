@@ -21,18 +21,26 @@ jobs:
         
     - name: Setup TDM-GCC (C compiler)
       run: |
-        # Windows runners have MinGW pre-installed, but we'll use TDM-GCC
-        # Download TDM-GCC installer
-        $tdmUrl = "https://github.com/jmeubank/tdm-gcc/releases/download/v10.3.0-tdm64-2/tdm64-gcc-10.3.0-2.exe"
-        $installer = "$env:TEMP\tdm-gcc-installer.exe"
-        Invoke-WebRequest -Uri $tdmUrl -OutFile $installer
-        
-        # Install silently
-        Start-Process -FilePath $installer -ArgumentList "/S" -Wait
-        
-        # Add to PATH
-        $env:Path += ";C:\TDM-GCC-64\bin"
-        echo "C:\TDM-GCC-64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        # Check if gcc is already available (Windows runners may have MinGW)
+        $gccPath = (Get-Command gcc -ErrorAction SilentlyContinue).Source
+        if ($gccPath) {
+          Write-Host "gcc already available at: $gccPath"
+          $env:CC = "gcc"
+        } else {
+          Write-Host "Installing TDM-GCC..."
+          # Download TDM-GCC installer
+          $tdmUrl = "https://github.com/jmeubank/tdm-gcc/releases/download/v10.3.0-tdm64-2/tdm64-gcc-10.3.0-2.exe"
+          $installer = "$env:TEMP\tdm-gcc-installer.exe"
+          Invoke-WebRequest -Uri $tdmUrl -OutFile $installer -UseBasicParsing
+          
+          # Install silently
+          Start-Process -FilePath $installer -ArgumentList "/S" -Wait -NoNewWindow
+          
+          # Add to PATH
+          $env:Path += ";C:\TDM-GCC-64\bin"
+          echo "C:\TDM-GCC-64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          $env:CC = "gcc"
+        }
         
     - name: Download r6-dissect.exe
       run: |
@@ -69,6 +77,7 @@ jobs:
     - name: Build executable
       run: |
         $env:CGO_ENABLED = "1"
+        if (-not $env:CC) { $env:CC = "gcc" }
         go build -ldflags="-s -w" -o r6-dissect-portable.exe
         if (Test-Path "r6-dissect-portable.exe") {
           $size = (Get-Item "r6-dissect-portable.exe").Length / 1MB
@@ -79,7 +88,7 @@ jobs:
         }
         
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: r6-dissect-portable-windows
         path: r6-dissect-portable.exe
