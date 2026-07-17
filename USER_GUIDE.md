@@ -91,12 +91,12 @@ Match information is stored in `matches.json` (created automatically).
 
 ## Features
 
-- ✅ **Automatic folder detection** - Finds your MatchReplay folder automatically
-- ✅ **Smart naming** - Files automatically named by map, score, and date
-- ✅ **Duplicate handling** - Automatically numbers duplicate matches
-- ✅ **Built-in viewer** - View Excel files without opening Excel
-- ✅ **Match history** - Keep track of all analyzed matches
-- ✅ **Portable** - No installation needed, just extract and run!
+- **Automatic folder detection** - Finds your MatchReplay folder automatically
+- **Smart naming** - Files automatically named by map, score, and date
+- **Duplicate handling** - Automatically numbers duplicate matches
+- **Built-in viewer** - View Excel files without opening Excel
+- **Match history** - Keep track of all analyzed matches
+- **Portable** - No installation needed, just extract and run!
 
 ## Support
 
