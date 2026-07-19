@@ -54,10 +54,10 @@ If you have access to a machine with gcc already installed, you can build there 
 ## Verification
 
 After building, verify:
-- ✅ File exists: `r6-dissect-portable.exe`
-- ✅ File size: ~25-40 MB
-- ✅ Can run: Double-click and GUI opens
-- ✅ No external files needed: Works standalone
+- File exists: `r6-dissect-portable.exe`
+- File size: ~25-40 MB
+- Can run: Double-click and GUI opens
+- No external files needed: Works standalone
 
 ## Distribution
 
