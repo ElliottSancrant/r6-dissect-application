@@ -1,11 +1,11 @@
 # Single Executable Distribution
 
-## ✅ Single .exe File Solution
+## Single .exe File Solution
 
 The application now embeds **everything** into a single executable file:
-- ✅ r6-dissect.exe (embedded)
-- ✅ All map images (embedded)
-- ✅ No external files needed!
+- r6-dissect.exe (embedded)
+- All map images (embedded)
+- No external files needed!
 
 ## How It Works
 
@@ -67,11 +67,11 @@ When building:
 
 ## Benefits
 
-✅ **Single file** - Just one .exe to download and run
-✅ **No setup** - No installation or configuration needed
-✅ **Portable** - Works from anywhere (USB drive, desktop, etc.)
-✅ **Self-contained** - No external dependencies required
-✅ **User-friendly** - No technical knowledge needed
+ **Single file** - Just one .exe to download and run
+ **No setup** - No installation or configuration needed
+ **Portable** - Works from anywhere (USB drive, desktop, etc.)
+ **Self-contained** - No external dependencies required
+ **User-friendly** - No technical knowledge needed
 
 ## Notes
 
