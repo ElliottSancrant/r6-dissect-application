@@ -11,21 +11,21 @@ A user-friendly GUI application for analyzing Rainbow Six Siege match replays.
 
 ## Features
 
--  **Easy Match Analysis** - Analyze R6 Siege matches with a simple GUI
--  **Auto-Detection** - Automatically finds your MatchReplay folder
+- **Easy Match Analysis** - Analyze R6 Siege matches with a simple GUI
+- **Auto-Detection** - Automatically finds your MatchReplay folder
 - **Match History** - View all previously analyzed matches
--  **Built-in Viewer** - View Excel statistics without opening Excel
--  **Smart Naming** - Files automatically named by map, score, and date
+- **Built-in Viewer** - View Excel statistics without opening Excel
+- **Smart Naming** - Files automatically named by map, score, and date
 - **Map Images** - Visual identification of matches
--  **Portable** - No installation required, just extract and run!
+- **Portable** - No installation required, just extract and run!
 
-##  Requirements
+## Requirements
 
 - Windows 10/11 (64-bit)
 - Rainbow Six Siege (Steam or Ubisoft)
 - All files included in the package
 
-##  Documentation
+## Documentation
 
 - **[USER_GUIDE.md](USER_GUIDE.md)** - Complete user guide
 - **[BUILD_INSTRUCTIONS.md](BUILD_INSTRUCTIONS.md)** - Build from source
@@ -42,12 +42,12 @@ A user-friendly GUI application for analyzing Rainbow Six Siege match replays.
 
 ```
 r6-dissect-portable/
-├── r6-dissect-portable.exe    ← Main application
-├── r6-dissect.exe             ← Required CLI tool
-├── r6-maps-images/            ← Map images
-├── setup.bat                   ← Optional setup script
-├── USER_GUIDE.md              ← User documentation
-└── matches/                   ← Created automatically
+├── r6-dissect-portable.exe    <- Main application
+├── r6-dissect.exe             <- Required CLI tool
+├── r6-maps-images/            <- Map images
+├── setup.bat                   <- Optional setup script
+├── USER_GUIDE.md              <- User documentation
+└── matches/                   <- Created automatically
 ```
 
 ## Troubleshooting
