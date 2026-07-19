@@ -63,14 +63,14 @@ r6-dissect-portable/
 
 ## Features
 
-- ✅ Automatic Steam/Ubisoft folder detection
-- ✅ Multi-drive search for MatchReplay folders
-- ✅ Smart filename generation (Map_Score_Date.xlsx)
-- ✅ Duplicate detection and numbering
-- ✅ Map image association
-- ✅ Built-in Excel viewer
-- ✅ Match history tracking
-- ✅ Portable (all paths relative to executable)
+- Automatic Steam/Ubisoft folder detection
+- Multi-drive search for MatchReplay folders
+- Smart filename generation (Map_Score_Date.xlsx)
+- Duplicate detection and numbering
+- Map image association
+- Built-in Excel viewer
+- Match history tracking
+- Portable (all paths relative to executable)
 
 ## Troubleshooting
 
